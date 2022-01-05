@@ -140,6 +140,5 @@ createNewBlock("second block");
 createNewBlock("third block");
 createNewBlock("fourth block");
 console.log(blockchain);
-// console.log(createNewBlock("hello"), createNewBlock("bye bye"));
 
 export {};
