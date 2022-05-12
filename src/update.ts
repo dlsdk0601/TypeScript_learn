@@ -138,3 +138,104 @@ type A = Array<number>;
 let arr1: A = [1, 2, 3, 4];
 
 function printAllNumbers(arr: Array<number>) {}
+
+// Class
+abstract class User {
+  constructor(
+    // private로 정의했다면 상속받은 클래스에서는 접근하지 못한다
+    // 때문에 User 클래스 안에서만 접근 가능
+    private firstName: string,
+    private lastName: string,
+    public nick: string,
+    // protected는 다른 클래스에서만 접근가능
+    protected middleName: string
+  ) {}
+  // 추상 메소드
+  abstract getNick(): void;
+  private getFullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
+}
+
+class ClassPlayer extends User {
+  // 추상화 클래스에서 signature만 언급한 메소드를 정의해야한다
+
+  getNick(): void {
+    // nick 은 public으로 상속됐기 때문에 접근가능
+    console.log(this.nick);
+
+    // private로 상속되어져서 접근 불가능
+    // console.log(this.firstName);
+
+    // protected로 정의된거라서 접근 가능
+    console.log(this.middleName);
+  }
+}
+
+const pla = new ClassPlayer("nico", "las", "니꼬", "ddd");
+
+// signature는 User 클래스에서 했으나, 정의는 상속된 클래스에서 했기 때문에 접근가능
+pla.getNick();
+
+// private로 정의된거라서 접근 불가능
+// pla.firstName
+
+// protected로 정의된거라서 접근 불가능
+// pla.middleName
+
+type Words = {
+  [key: string]: string;
+};
+
+class Dict {
+  private words: Words;
+  constructor() {
+    this.words = {};
+  }
+  // 클래스를 타입처럼 쓸수 있음
+  add(word: Word) {
+    // term과 def는 모두 public으로 선언되서 접근가능
+    if (this.words[word.term] === undefined) {
+      this.words[word.term] = word.def;
+    }
+  }
+  def(term: string) {
+    return this.words[term];
+  }
+}
+
+class Word {
+  constructor(public readonly term: string, public readonly def: string) {}
+}
+
+const kimchi = new Word("kimchi", "한국의 음식");
+const dict = new Dict();
+
+dict.add(kimchi); // => {"kimchi": "한국의 음식"}
+dict.def("kimchi"); // => 한국의 음식
+
+// def가 public으로 정의되었기에 이런식으로 적는게 가능
+// 때문에 readonly를 추가한거임
+// kimchi.def = "asdfasdf"
+
+type Team = "red" | "blue" | "yellow";
+
+type Health = 1 | 5 | 10;
+
+// type과 interface의 공통점은 객체의 모양을 잡는거지만
+// 차이점은 type이 좀더 범용성이 크다
+// 즉 interface는 객체의 타입만을 정의한다
+interface Play {
+  nickname: string;
+  team: Team;
+  health: Health;
+}
+
+// interface도 상속 가능
+interface AA extends Play {}
+
+const Plad: AA = {
+  nickname: "asdfasdf",
+  team: "red",
+  health: 5,
+};
