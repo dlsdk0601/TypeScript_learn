@@ -239,3 +239,38 @@ const Plad: AA = {
   team: "red",
   health: 5,
 };
+
+// 추상화 클래스로 상속했던걸 interface로 변경
+// abstract class UserI {
+//   constructor(protected firstName: string, protected lastName: string) {}
+//   abstract sayHi(name: string): string;
+//   abstract fullName(): string;
+// }
+interface UserI {
+  firstName: string;
+  lastName: string;
+  sayHi(name: string): string;
+  fullName(): string;
+}
+
+interface HumanI {
+  health: number;
+}
+
+// 추상 클래스이면 extends라는 말을 implements로 바꾼다
+// extends로 추상 클래스를 상속받는건 위에 있음
+// *** interface로 상속 받을때에는 private를 쓸 수 없다
+//  ** interface는 가볍다. 왜냐하면 js로 컴파일 될 때, js 문법으로 바뀌는게 아니라 사라지게 된다
+class PlayerI implements UserI, HumanI {
+  constructor(
+    public firstName: string,
+    public lastName: string,
+    public health: number
+  ) {}
+  fullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
+  sayHi(name: string) {
+    return `Hello ${name} my name is ${this.fullName()}`;
+  }
+}
